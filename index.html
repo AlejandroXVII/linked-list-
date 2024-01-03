@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<script>
+			class Node {
+				constructor() {
+					this.value = null;
+					this.next = null;
+				}
+				setValue(value) {
+					this.value = value;
+				}
+			}
+			class LinkedList {
+				constructor() {
+					this.head = null;
+					this.tail = null;
+					this.size = 0;
+				}
+				append(node) {
+					if (this.head === null) {
+						this.head = node;
+						this.tail = node;
+					} else {
+						this.tail.next = node;
+						this.tail = this.tail.next;
+					}
+					this.size += 1;
+				}
+				prepend(node) {
+					if (this.head === null) {
+						this.head = node;
+						this.tail = node;
+					} else {
+						node.next = this.head;
+						this.head = node;
+					}
+					this.size += 1;
+				}
+				at(index) {
+					if ((this.head !== null) & (index <= this.size)) {
+						let ptr = this.head;
+						let i = 0;
+
+						while (i <= index) {
+							if (i === index) {
+								return ptr;
+							}
+							ptr = ptr.next;
+							i += 1;
+						}
+					} else {
+						return null;
+					}
+				}
+				pop() {
+					let ptr = this.at(this.size - 2);
+					ptr.next = null;
+					this.tail = ptr;
+				}
+				contains(value) {
+					if (this.head !== null) {
+						let ptr = this.head;
+
+						for (let index = 0; index < this.size - 1; index++) {
+							if (value === ptr.value) {
+								return true;
+							}
+							ptr = ptr.next;
+						}
+						return false;
+					} else {
+						return false;
+					}
+				}
+				find(value) {
+					if (this.head !== null) {
+						let ptr = this.head;
+
+						for (let index = 0; index < this.size - 1; index++) {
+							if (value === ptr.value) {
+								return index;
+							}
+							ptr = ptr.next;
+						}
+						return null;
+					} else {
+						return null;
+					}
+				}
+				toString() {
+					if (this.head !== null) {
+						let ptr = this.head;
+						let string = "";
+						for (let index = 0; index < this.size - 1; index++) {
+							string += "( " + ptr.value + " )-->";
+							ptr = ptr.next;
+						}
+						return string + "null";
+					} else {
+						return "list is empty";
+					}
+				}
+				removeAt(index) {
+					if (index < this.size) {
+						let ptr = this.at(index);
+						if (ptr === this.head) {
+							this.head = this.head.next;
+						} else {
+							if (index === this.size) {
+								this.pop();
+							} else {
+								let midPtr = this.at(index - 1);
+								midPtr.next = midPtr.next.next;
+							}
+						}
+						this.size -= 1;
+					} else {
+						console.log("this list is not that big");
+					}
+				}
+				insertAt(value, index) {
+					const node = new Node();
+					node.setValue(value);
+					if (index < this.size) {
+						if (index === 0) {
+							this.prepend(node);
+						} else {
+							if (index === this.size) {
+								this.pop();
+							} else {
+								let ptr = this.at(index - 1);
+								node.next = ptr.next;
+								ptr.next = node;
+								this.size += 1;
+							}
+						}
+					} else {
+						this.append(node);
+					}
+				}
+			}
+
+			const node = new Node();
+			node.setValue("first node");
+			const node2 = new Node();
+			node2.setValue("second node");
+			const node3 = new Node();
+			node3.setValue("3re node");
+			const node4 = new Node();
+			node4.setValue("4re node");
+			const node5 = new Node();
+			node5.setValue("5re node");
+			//TESTING ALL THE LISTS METHODS
+			const list = new LinkedList();
+			list.append(node);
+			list.append(node2);
+			list.append(node3);
+			list.prepend(node4);
+			list.append(node5);
+			console.log(list.toString());
+			console.log(list);
+			console.log(list.size);
+			console.log(list.head);
+			console.log(list.tail);
+			console.log(list.at(0));
+			list.pop();
+			console.log(list.toString());
+			console.log(list.find("6re node"));
+			console.log(list.find("3re node"));
+			list.insertAt("node inserted", 6);
+			console.log(list.toString());
+		</script>
+	</body>
+</html>
